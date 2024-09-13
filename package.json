@@ -6,8 +6,12 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/server.js",
-    "lint": "echo",
-    "dev": "npx ts-node-dev src/server.ts"
+    "dev": "npx ts-node-dev src/server.ts",
+    "test": "jest",
+    "lint": "tslint -v",
+    "start-client": "cross-env REACT_APP_IS_DEV=false node scripts/start.js",
+    "dev-client": "cross-env REACT_APP_IS_DEV=true node client/scripts/start.js",
+    "build-client": "node client/scripts/build.js"
   },
   "keywords": [],
   "author": "",
