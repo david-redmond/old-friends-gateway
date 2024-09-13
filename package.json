@@ -7,7 +7,7 @@
     "build": "npx tsc",
     "start": "node dist/server.js",
     "dev": "npx ts-node-dev src/server.ts",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "lint": "tslint -v",
     "start-client": "cross-env REACT_APP_IS_DEV=false node scripts/start.js",
     "dev-client": "cross-env REACT_APP_IS_DEV=true node client/scripts/start.js",
