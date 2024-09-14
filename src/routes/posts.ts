@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import axios from "axios";
 import logger from "../logger";
+import authenticateToken from "../auth";
 
 const router = Router();
 
@@ -24,33 +25,19 @@ router.get("/", async (req: Request, res: Response) => {
     }
 });
 
-router.post("/", async (req: any, res) => {
+router.post("/", authenticateToken, async (req: any, res) => {
     try {
-        const { name, attributes, description, comments } = req.body;
+        const payload: any = {
+            title: req.body.title,
+            description: req.body.description,
+            images: [],
+            comments: [],
+            likes: 0,
+            attributes: req.body.attributes,
+            creator: req.user._id
+        };
 
-        // Creating a FormData object to handle the file upload
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('description', description);
-        formData.append('attributes', attributes);
-        formData.append('comments', comments);
-
-        console.log(req.body);
-        console.log(req.files);
-
-        // const images = req.files.map((file: any) => ({
-        //     type: file.mimetype,
-        //     path: file.path,
-        // }));
-
-        // Appending images to formData
-        // images.forEach((image: any) => formData.append('images', image));
-
-        const post = await axios.post(`${process.env.POSTS_SERVICE}/`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data', // Required header for file uploads
-            },
-        });
+        const post = await axios.post(`${process.env.POSTS_SERVICE}/`, payload);
         logger.debug(`/api/posts/, POST`);
         return res.status(201).json(post);
     } catch (error) {
