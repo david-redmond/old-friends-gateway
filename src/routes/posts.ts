@@ -39,7 +39,7 @@ router.post("/", authenticateToken, async (req: any, res) => {
 
         const post = await axios.post(`${process.env.POSTS_SERVICE}/`, payload);
         logger.debug(`/api/posts/, POST`);
-        return res.status(201).json(post);
+        return res.status(201).send(post.data);
     } catch (error) {
         console.error("Error POST /: creating post", error);
         return res.status(500).json({ message: "Error creating post", error });
